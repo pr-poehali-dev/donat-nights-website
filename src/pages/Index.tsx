@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Icon from '@/components/ui/icon';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -6,6 +6,18 @@ import { Badge } from '@/components/ui/badge';
 
 const Index = () => {
   const [activeSection, setActiveSection] = useState('home');
+
+  useEffect(() => {
+    const hash = window.location.hash.replace('#', '');
+    if (hash) {
+      setActiveSection(hash);
+    }
+  }, []);
+
+  const navigateTo = (section: string) => {
+    setActiveSection(section);
+    window.location.hash = section;
+  };
 
   const privileges = [
     {
@@ -76,7 +88,7 @@ const Index = () => {
             <Button 
               size="lg" 
               className="text-lg px-8 py-6 hover:scale-105 transition-transform"
-              onClick={() => setActiveSection('privileges')}
+              onClick={() => navigateTo('privileges')}
             >
               <Icon name="ShoppingCart" className="mr-2" size={20} />
               Купить привилегию
@@ -85,7 +97,7 @@ const Index = () => {
               size="lg" 
               variant="outline" 
               className="text-lg px-8 py-6 hover:scale-105 transition-transform"
-              onClick={() => setActiveSection('rules')}
+              onClick={() => navigateTo('rules')}
             >
               <Icon name="BookOpen" className="mr-2" size={20} />
               Правила
@@ -165,7 +177,7 @@ const Index = () => {
             <CardFooter>
               <Button 
                 className="w-full text-lg py-6"
-                onClick={() => setActiveSection('payment')}
+                onClick={() => navigateTo('payment')}
               >
                 <Icon name="ShoppingCart" className="mr-2" size={20} />
                 Купить
@@ -308,7 +320,7 @@ const Index = () => {
       <nav className="sticky top-0 z-50 backdrop-blur-lg bg-background/80 border-b border-border">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-20">
-            <div className="flex items-center gap-2 cursor-pointer" onClick={() => setActiveSection('home')}>
+            <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigateTo('home')}>
               <div className="bg-gradient-to-br from-primary to-primary/60 p-2 rounded-lg">
                 <Icon name="Gamepad2" className="text-primary-foreground" size={28} />
               </div>
@@ -327,7 +339,7 @@ const Index = () => {
                   key={item.id}
                   variant={activeSection === item.id ? 'default' : 'ghost'}
                   className="gap-2"
-                  onClick={() => setActiveSection(item.id)}
+                  onClick={() => navigateTo(item.id)}
                 >
                   <Icon name={item.icon as any} size={18} />
                   <span className="hidden md:inline">{item.label}</span>
